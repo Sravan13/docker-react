@@ -7,3 +7,17 @@ before_install:
 
 script:
     - docker run -e CI=true  sravan13/docker-react npm run test
+
+deploy:
+    provider: elasticbeanstalk # travis have list of host provider so, if we mention the provider name it understands
+    region: "us-east-2" # region we get from instance url ex: http://dockerreact-env.eba-ifqk7wrp.us-east-2.elasticbeanstalk.com/
+    name: "docker-react" # name of the app in aws
+    env: "DockerReact-env" # name of the env in aws
+    bucket_name: "elasticbeanstalk-us-east-2-299633395174" # travis decides to deploy our code base it takes all the files inside the code repository and zip then all up 
+    #into one single file and copy them over to s3 bucket i.e an harddrive running on AWS .Onces all the file copied over then travis pock elastic bean stack that i copied all file 
+    #to particular bucket
+    bucket_path: "docker-react" #
+    on:
+        branch: master # deployment should happen only when code is pushed to master branch
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
