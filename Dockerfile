@@ -6,7 +6,7 @@
 #In these we have two phases (build phase and run phase) . First phase is to build react Application and in second phase we 
 # copying files generated in first phase  to nginx folder for running the application.
 
-FROM node:alpine as builder
+FROM node:alpine
 WORKDIR /app
 COPY package.json .
 RUN npm install
@@ -15,7 +15,7 @@ RUN npm run build
 
 FROM nginx
 EXPOSE 80
-COPY --from=builder /app/build /usr/share/nginx/html 
+COPY --from=0 /app/build /usr/share/nginx/html 
 # the movement when we copy the files from build to nginx all the rest of the files in first phase 
 #container will be dropped off
 
