@@ -6,16 +6,20 @@
 #In these we have two phases (build phase and run phase) . First phase is to build react Application and in second phase we 
 # copying files generated in first phase  to nginx folder for running the application.
 
-FROM node:alpine
+#FROM node:alpine as builder #AWS docker is not supporting alias
+
+FROM node:alpine 
 WORKDIR /app
-COPY package.json .
+COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
 
 FROM nginx
 EXPOSE 80
+#COPY --from=builder /app/build /usr/share/nginx/html #AWS docker is not supporting alias
 COPY --from=0 /app/build /usr/share/nginx/html 
+#first build starts at zero index
 # the movement when we copy the files from build to nginx all the rest of the files in first phase 
 #container will be dropped off
 
