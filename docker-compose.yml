@@ -1,0 +1,38 @@
+version: '3'
+services:
+    # this web service is to set the app 
+    #Note : Web service is alternative for below command
+    # docker run -p 3000:3000  -v /app/node_modules -v $(pwd):/app -it frontendfordocker            
+
+    web:
+        stdin_open: true # in react 16  there is bug to over come that we kept this
+        #build: . # this will build dockerfile exist in the pwd
+
+        #As we know we don't have default Dockerfile .we have to create custom docker file
+        # for that we have to specify for wher customfile is
+        build: 
+            context: . # pwd
+            dockerfile: Dockerfile.dev
+        ports: 
+            - "3000:3000"
+        volumes: 
+            - /app/node_modules # this will say don't map outside container with app node modules inside the container
+            - .:/app # this will map pwd to /app in side the container
+
+    
+    # below is to run the test cases
+    tests:
+        build: 
+            context: .
+            dockerfile: Dockerfile.dev
+
+        volumes: 
+            - /app/node_modules
+            - .:/app 
+
+        command: ["npm","run","test"] # this will override run command in the docker file for this service
+
+
+#note in this file we have two independent containers
+#web service host the application
+#tests service which runs test cases        
