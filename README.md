@@ -1,3 +1,16 @@
+
+## Architecture  (Single Container Setup)
+  
+   Push code to github --> Travis automatically pulls repo --> Travis build an images, test code --> Travis pushes code
+   to AWS EB --> EB builds image, deploy it<br />
+
+
+
+
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
